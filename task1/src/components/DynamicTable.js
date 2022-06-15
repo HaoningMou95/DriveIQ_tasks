@@ -1,76 +1,68 @@
 import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
-import axios from 'axios'
 import { CircularProgress } from '@mui/material'
 import { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchData, addData, deleteData } from '../store';
+import '../App.css'
+
 
 
 function DynamicTable () {
-    const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
+    const fetchedData = useSelector(state => state.apiData.apiData)
+    const dispatch = useDispatch()
 
-    const onLoading = async () => {
-        setLoading(true)
-        axios.get(`http://universities.hipolabs.com/search?country=Australia`)
-            .then((res)=>{
-                setData(res.data)
-                setLoading(false)
-            })
-            .catch((error=>{
-                console.log(error)
-                alert('Fail to fetch data.')
-            }))         
+    const loadData = () => {
+        dispatch(fetchData(setLoading));
     }
-
+    
     const handleDelete = () => {
-        const newData = data.slice(0, data.length-1)
-        setData(newData)
+        dispatch(deleteData())
     }
 
     const handleAdd = () => {
-        const firstEle = [data[0]]
-        const newData = data.concat(firstEle)
-        setData(newData)
+        dispatch(addData())
     }
 
     return(
-        <div>
+        <div className = 'App'>
             {loading && 
                 <CircularProgress sx={{
                     position: 'absolute',
                     marginTop: 30,
                     zIndex: 1,}}
                 />}
-            <div>
-                <Button onClick={onLoading}>Loading</Button>
-                <Button onClick={handleDelete}>DELETE</Button>
-                <Button  onClick={handleAdd}>ADD</Button>
-                <TableContainer>
+                <div className='actionBoard'>
+                    <Button onClick={loadData} variant='outlined' color='primary' className='actionBtn'>LOAD</Button>
+                    <Button onClick={handleDelete} variant='outlined' color='error' className='actionBtn'>DELETE</Button>
+                    <Button onClick={handleAdd} variant='contained' color='success' className='actionBtn'>ADD</Button>
+                </div>
+                <TableContainer style={{padding: 40}}>
                     <Table>
                         <TableHead>
-                            <TableRow>
-                                <TableCell>domains</TableCell>
-                                <TableCell>web_pages</TableCell>
-                                <TableCell>state-province</TableCell>
-                                <TableCell>name</TableCell>
-                                <TableCell>country</TableCell>
-                                <TableCell>alpha_two_code</TableCell>
+                            <TableRow className='headRow'>
+                                <TableCell align='justify'>Domains</TableCell>
+                                <TableCell align='justify'>Web Pages</TableCell>
+                                <TableCell align='justify'>State Province</TableCell>
+                                <TableCell align='justify'>Name</TableCell>
+                                <TableCell align='justify'>Country</TableCell>
+                                <TableCell align='justify'>Alpha Two Code</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {data.map((row, i) => (
+                            {fetchedData.map((row, i) => (
                                 <TableRow key={i}>
-                                    <TableCell>{row.domains}</TableCell>
-                                    <TableCell>{row.web_pages}</TableCell>
-                                    <TableCell>{!row['state-province']&&'NULL'}</TableCell>
-                                    <TableCell>{row.name}</TableCell>
-                                    <TableCell>{row.country}</TableCell>
-                                    <TableCell>{row.alpha_two_code}</TableCell>
+                                    <TableCell align='justify'>{row.domains}</TableCell>
+                                    <TableCell align='justify'>{row.web_pages}</TableCell>
+                                    <TableCell align='justify'>{!row['state-province']&&'NULL'}</TableCell>
+                                    <TableCell align='justify'>{row.name}</TableCell>
+                                    <TableCell align='justify'>{row.country}</TableCell>
+                                    <TableCell align='justify'>{row.alpha_two_code}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
-            </div>
         </div>
     )
 }
