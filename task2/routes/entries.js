@@ -1,6 +1,6 @@
-var express = require('express');
-var router = express.Router();
-const axios = require('axios');
+var express = require('express')
+var router = express.Router()
+const axios = require('axios')
 const { dataFilter } = require('../util/dataUtils')
 
 router.get('/', function(req, res) {

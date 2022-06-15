@@ -11,6 +11,14 @@ npm install
 npm start
 ```
 
+Recommend to use Postman to fetch data from endpoint after server is running. 
+
+fetch data from the followed url
+
+localhost:3000/entries?category= &limit= 
+
+or use the provided Postman collection
+
 ## Technology
 
 * Node JS
