@@ -9,19 +9,19 @@ import '../App.css'
 
 function DynamicTable () {
     const [loading, setLoading] = useState(false)
-    const fetchedData = useSelector(state => state.apiData.apiData)
+    const fetchedData = useSelector(state => state.apiData.apiData) //fetch data from redux store
     const dispatch = useDispatch()
 
     const loadData = () => {
-        dispatch(fetchData(setLoading));
+        dispatch(fetchData(setLoading)); //call fetch data action
     }
     
     const handleDelete = () => {
-        dispatch(deleteData())
+        dispatch(deleteData()) //call delete data action
     }
 
     const handleAdd = () => {
-        dispatch(addData())
+        dispatch(addData()) //call add data action
     }
 
     return(

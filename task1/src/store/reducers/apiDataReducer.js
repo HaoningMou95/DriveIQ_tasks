@@ -4,6 +4,7 @@ const initialState = {
     apiData : []
 }
 
+// handle business logic when actions were called
 const apiDataReducer = (state = initialState, action) => {
     switch(action.type) {
         case LOAD_DATA:
